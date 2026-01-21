@@ -1,0 +1,158 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="row mt-4">
+  <div class="col-10 offset-1">
+
+    <h3 class="mb-3">Listing Details</h3>
+
+    <!-- LISTING CARD -->
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card mb-3">
+          <img
+            src="<%= listing.image.url %>"
+            class="card-img-top"
+            alt="listing image"
+            style="height: 180px; object-fit: cover;"
+          />
+          <div class="card-body">
+            <h5 class="card-title"><%= listing.title %></h5>
+            <p class="card-text"><%= listing.description %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <ul class="list-group mb-3 w-50 mx-auto">
+      <li class="list-group-item">
+        &#8377;
+        <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %>
+      </li>
+      <li class="list-group-item"><%= listing.location %></li>
+      <li class="list-group-item"><%= listing.country %></li>
+    </ul>
+
+    <!-- ACTION BUTTONS -->
+    <div class="text-center mb-4">
+      <a
+        href="/listings/<%= listing._id %>/edit"
+        class="btn showEdit-btn me-2"
+      >
+        Edit Listing
+      </a>
+
+      <form
+        method="POST"
+        action="/listings/<%= listing._id %>?_method=DELETE"
+        style="display:inline;"
+      >
+        <button class="btn show-btn">Delete Listing</button>
+      </form>
+    </div>
+
+    <hr />
+
+    <!-- REVIEW FORM -->
+    <div class="col-8 offset-2 mb-4">
+      <h4>Leave a Review</h4>
+
+      <form
+        action="/listings/<%= listing._id %>/reviews"
+        method="POST"
+        class="needs-validation"
+        novalidate
+      >
+        <!-- AUTHOR -->
+        <div class="mb-3">
+          <label for="author" class="form-label">Your Name</label>
+          <input
+            type="text"
+            id="author"
+            name="review[author]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Name is required</div>
+        </div>
+
+        <!-- RATING -->
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating</label>
+          <input
+            type="range"
+            min="1"
+            max="5"
+            id="rating"
+            name="review[rating]"
+            class="form-range"
+          />
+        </div>
+
+        <!-- COMMENT -->
+        <div class="mb-3">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea
+            name="review[comment]"
+            id="comment"
+            rows="4"
+            class="form-control"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Please enter a comment</div>
+        </div>
+
+        <button class="btn btn-outline-dark">Submit</button>
+      </form>
+    </div>
+
+    <hr />
+
+    <!-- ALL REVIEWS -->
+    <h4 class="mt-4 mb-3 text-center">All Reviews</h4>
+    <div class="row">
+  <% if (listing.reviews.length === 0) { %>
+    <p class="text-muted text-center">No reviews yet.</p>
+  <% } %>
+
+  <% for (let review of listing.reviews) { %>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+
+          <!-- REVIEWER NAME -->
+          <h6 class="card-title mb-1">
+            <strong><%= review.author %></strong>
+          </h6>
+
+          <!-- RATING -->
+          <small class="text-warning">
+            <%= "★".repeat(review.rating) %>
+          </small>
+
+          <!-- COMMENT -->
+          <p class="card-text mt-2">
+            <%= review.comment %>
+          </p>
+
+          <!-- DELETE REVIEW BUTTON -->
+          <form
+            method="POST"
+            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+            class="mt-2"
+          >
+            <button class="btn btn-sm btn-outline-danger">
+              Delete
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+    
+
+  </div>
+</div>

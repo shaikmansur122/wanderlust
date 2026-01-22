@@ -54,6 +54,7 @@ router.post(
     wrapAsync(async (req, res) => {
         const newListing = new Listing(req.body.listing);
         await newListing.save();
+        req.flash("success", "New Listing Created");
         res.redirect("/listings");
     })
 );
@@ -68,7 +69,7 @@ router.get(
         if (!listing) {
             throw new ExpressError(404, "Listing not found");
         }
-
+        req.flash("success", " Listing updated");
         res.render("listings/edit", { listing });
     })
 );
@@ -103,7 +104,7 @@ router.delete(
         if (!listing) {
             throw new ExpressError(404, "Listing not found");
         }
-
+        req.flash("success", " Listing deleted");
         res.redirect("/listings");
     })
 );

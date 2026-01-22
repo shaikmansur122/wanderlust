@@ -8,6 +8,13 @@ A full stack web application built using Node.js, Express.js, MongoDB, and EJS.
 - MVC architecture
 - Error handling
 
+## 🆕 Recent Updates
+
+- Fixed listing image validation using Joi
+- Improved flash messages UI
+- Enhanced error handling and validation flow
+- ADDED cookie sessions
+
 ## How to Run
 ```bash
 npm install

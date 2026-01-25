@@ -9,14 +9,18 @@
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-5">
         <div class="card mb-3">
-          <img
-            src="<%= listing.image.url %>"
-            class="card-img-top"
-            alt="listing image"
-            style="height: 180px; object-fit: cover;"
-          />
+          <img src="<%= listing.image.url %>"
+               class="card-img-top"
+               alt="listing image"
+               style="height: 180px; object-fit: cover;" />
+
           <div class="card-body">
             <h5 class="card-title"><%= listing.title %></h5>
+
+            <p class="text-muted mb-1">
+              Hosted by <strong><%= listing.owner.username %></strong>
+            </p>
+
             <p class="card-text"><%= listing.description %></p>
           </div>
         </div>
@@ -33,126 +37,98 @@
       <li class="list-group-item"><%= listing.country %></li>
     </ul>
 
-    <!-- ACTION BUTTONS -->
+    <!-- OWNER ACTION BUTTONS -->
+    <% if (currentUser && listing.owner._id.equals(currentUser._id)) { %>
     <div class="text-center mb-4">
-      <a
-        href="/listings/<%= listing._id %>/edit"
-        class="btn showEdit-btn me-2"
-      >
-        Edit Listing
-      </a>
+      <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning me-2">Edit</a>
 
-      <form
-        method="POST"
-        action="/listings/<%= listing._id %>?_method=DELETE"
-        style="display:inline;"
-      >
-        <button class="btn show-btn">Delete Listing</button>
+      <form method="POST"
+            action="/listings/<%= listing._id %>?_method=DELETE"
+            style="display:inline;">
+        <button class="btn btn-danger">Delete</button>
       </form>
     </div>
+    <% } %>
 
     <hr />
 
     <!-- REVIEW FORM -->
+    <% if (currentUser) { %>
     <div class="col-8 offset-2 mb-4">
       <h4>Leave a Review</h4>
 
-      <form
-        action="/listings/<%= listing._id %>/reviews"
-        method="POST"
-        class="needs-validation"
-        novalidate
-      >
-        <!-- AUTHOR -->
+      <form action="/listings/<%= listing._id %>/reviews"
+            method="POST"
+            class="needs-validation"
+            novalidate>
+
         <div class="mb-3">
-          <label for="author" class="form-label">Your Name</label>
-          <input
-            type="text"
-            id="author"
-            name="review[author]"
-            class="form-control"
-            required
-          />
-          <div class="invalid-feedback">Name is required</div>
+          <label class="form-label">Rating</label>
+          <input type="range" min="1" max="5"
+                 name="review[rating]" class="form-range" />
         </div>
 
-        <!-- RATING -->
         <div class="mb-3">
-          <label for="rating" class="form-label">Rating</label>
-          <input
-            type="range"
-            min="1"
-            max="5"
-            id="rating"
-            name="review[rating]"
-            class="form-range"
-          />
-        </div>
-
-        <!-- COMMENT -->
-        <div class="mb-3">
-          <label for="comment" class="form-label">Comment</label>
-          <textarea
-            name="review[comment]"
-            id="comment"
-            rows="4"
-            class="form-control"
-            required
-          ></textarea>
+          <label class="form-label">Comment</label>
+          <textarea name="review[comment]" rows="4"
+                    class="form-control" required></textarea>
           <div class="invalid-feedback">Please enter a comment</div>
         </div>
 
         <button class="btn btn-outline-dark">Submit</button>
       </form>
     </div>
+    <% } %>
 
     <hr />
 
     <!-- ALL REVIEWS -->
     <h4 class="mt-4 mb-3 text-center">All Reviews</h4>
     <div class="row">
-  <% if (listing.reviews.length === 0) { %>
-    <p class="text-muted text-center">No reviews yet.</p>
-  <% } %>
 
-  <% for (let review of listing.reviews) { %>
-    <div class="col-md-6 mb-3">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
+      <% if (listing.reviews.length === 0) { %>
+        <p class="text-muted text-center">No reviews yet.</p>
+      <% } %>
 
-          <!-- REVIEWER NAME -->
-          <h6 class="card-title mb-1">
-            <strong><%= review.author %></strong>
-          </h6>
+      <% for (let review of listing.reviews) { %>
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
 
-          <!-- RATING -->
-          <small class="text-warning">
-            <%= "★".repeat(review.rating) %>
-          </small>
+              <!-- REVIEW AUTHOR -->
+              <h6 class="card-title mb-1">
+                <strong>
+                  <% if (currentUser && review.author._id.equals(currentUser._id)) { %>
+                    You
+                  <% } else { %>
+                    <%= review.author.username %>
+                  <% } %>
+                </strong>
+              </h6>
 
-          <!-- COMMENT -->
-          <p class="card-text mt-2">
-            <%= review.comment %>
-          </p>
+              <!-- RATING -->
+              <small class="text-warning">
+                <%= "★".repeat(review.rating) %>
+              </small>
 
-          <!-- DELETE REVIEW BUTTON -->
-          <form
-            method="POST"
-            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-            class="mt-2"
-          >
-            <button class="btn btn-sm btn-outline-danger">
-              Delete
-            </button>
-          </form>
+              <!-- COMMENT -->
+              <p class="card-text mt-2"><%= review.comment %></p>
 
+              <!-- DELETE REVIEW (AUTHOR ONLY) -->
+              <% if (currentUser && review.author._id.equals(currentUser._id)) { %>
+              <form method="POST"
+                    action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                    class="mt-2">
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+              <% } %>
+
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  <% } %>
-</div>
+      <% } %>
 
-    
+    </div>
 
   </div>
 </div>

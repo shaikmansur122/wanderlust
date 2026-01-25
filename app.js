@@ -6,6 +6,12 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+console.log(typeof LocalStrategy);
+const User = require("./models/user.js");
+
+
 
 const ExpressError = require("./utils/expressError");
 
@@ -14,6 +20,7 @@ const ExpressError = require("./utils/expressError");
 // --------------------
 const listingRoutes = require("./routes/listing");
 const reviewRoutes = require("./routes/reviews");
+const userRoutes = require("./routes/user.js");
 
 // --------------------
 // DATABASE
@@ -53,16 +60,34 @@ const sessionOptions = {
 app.use(session(sessionOptions));
 app.use(flash());
 
-app.use((req,res,next) => {
+  // --------------------
+// AUTENTICATION
+// --------------------
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+ 
+
+
+
+app.use((req, res, next) => {
   res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");   
+  res.locals.currentUser = req.user;       
   next();
 });
+
 
 // --------------------
 // ROUTE MOUNTING
 // --------------------
 app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
+app.use("/", userRoutes);
 
 // --------------------
 // 404 HANDLER
@@ -75,10 +100,12 @@ app.use((req, res, next) => {
 // ERROR HANDLER
 // --------------------
 app.use((err, req, res, next) => {
+  console.error("🔥 REAL ERROR:", err); 
   const { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode);
   res.render("error", { message });
 });
+
 
 // --------------------
 app.listen(8080, () => {

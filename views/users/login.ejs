@@ -1,0 +1,61 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow p-4">
+      <h2 class="text-center mb-4">Welcome Back</h2>
+
+      <!-- Flash Messages -->
+      <% if (error && error.length > 0) { %>
+        <div class="alert alert-danger text-center"><%= error[0] %></div>
+      <% } %>
+
+      <% if (success && success.length > 0) { %>
+        <div class="alert alert-success text-center"><%= success[0] %></div>
+      <% } %>
+
+      <form action="/login" method="POST" class="needs-validation" novalidate>
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+          <div class="invalid-feedback">Username is required</div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+          <div class="invalid-feedback">Password cannot be empty</div>
+        </div>
+
+        <button class="btn btn-dark w-100">Login</button>
+
+        <p class="text-center mt-3">
+          Don't have an account?
+          <a href="/signup">Sign Up</a>
+        </p>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bootstrap Validation -->
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>

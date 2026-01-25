@@ -20,6 +20,10 @@ const listingSchema = new Schema({
             ref: "Review",
         }
     ],
+    owner: {                     // ✅ fixed name
+        type: Schema.Types.ObjectId,
+        ref: "User",              // ✅ must match model name exactly
+    }
 });
 
 module.exports = mongoose.model("Listing", listingSchema);

@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 
 const listingSchema = new Schema({
     title: {
-        type: String,
-        required: true,
+        url: String,
+        filename: String
     },
     description: String,
     image: {

@@ -7,6 +7,7 @@ A full stack web application built using Node.js, Express.js, MongoDB, and EJS.
 - Review system with validation
 - MVC architecture
 - Error handling
+- image uploading using cloudnary
 
 ## 🆕 Recent Updates
 
@@ -14,6 +15,7 @@ A full stack web application built using Node.js, Express.js, MongoDB, and EJS.
 - Improved flash messages UI
 - Enhanced error handling and validation flow
 - ADDED cookie sessions
+-  added image upload feature
 
 ## How to Run
 ```bash
@@ -82,3 +84,35 @@ JOI validation for listings & reviews
 Express error handling middleware
 
 Method-override for PUT & DELETE routes
+
+
+
+NEW FEATURES
+
+📸 Image Upload & Update Feature
+
+This project supports image upload from local system when creating and editing listings using Cloudinary.
+
+🚀 Features
+
+Users can upload images directly from their computer.
+
+Images are stored securely on Cloudinary.
+
+The image URL and filename are saved in MongoDB.
+
+While editing a listing:
+
+If a new image is uploaded → the old image is automatically deleted from Cloudinary.
+
+If no image is uploaded → the existing image remains unchanged.
+
+🛠 Technologies Used
+
+Multer – Handles file uploads
+
+Cloudinary – Cloud image storage
+
+multer-storage-cloudinary – Connects multer with Cloudinary
+
+dotenv – Secures API credentials

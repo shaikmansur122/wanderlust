@@ -5,7 +5,6 @@
 
     <h3 class="mb-3">Listing Details</h3>
 
-    <!-- LISTING CARD -->
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-5">
         <div class="card mb-3">
@@ -16,35 +15,27 @@
 
           <div class="card-body">
             <h5 class="card-title"><%= listing.title %></h5>
-
             <p class="text-muted mb-1">
               Hosted by <strong><%= listing.owner.username %></strong>
             </p>
-
             <p class="card-text"><%= listing.description %></p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- DETAILS -->
     <ul class="list-group mb-3 w-50 mx-auto">
       <li class="list-group-item">
-        &#8377;
-        <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %>
+        &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %>
       </li>
       <li class="list-group-item"><%= listing.location %></li>
       <li class="list-group-item"><%= listing.country %></li>
     </ul>
 
-    <!-- OWNER ACTION BUTTONS -->
     <% if (currentUser && listing.owner._id.equals(currentUser._id)) { %>
     <div class="text-center mb-4">
       <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning me-2">Edit</a>
-
-      <form method="POST"
-            action="/listings/<%= listing._id %>?_method=DELETE"
-            style="display:inline;">
+      <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="display:inline;">
         <button class="btn btn-danger">Delete</button>
       </form>
     </div>
@@ -52,26 +43,36 @@
 
     <hr />
 
-    <!-- REVIEW FORM -->
+    <!-- ⭐ REVIEW FORM -->
     <% if (currentUser) { %>
     <div class="col-8 offset-2 mb-4">
       <h4>Leave a Review</h4>
 
-      <form action="/listings/<%= listing._id %>/reviews"
-            method="POST"
-            class="needs-validation"
-            novalidate>
+      <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
 
         <div class="mb-3">
           <label class="form-label">Rating</label>
-          <input type="range" min="1" max="5"
-                 name="review[rating]" class="form-range" />
+          <div class="star-rating">
+            <input type="radio" id="5-stars" name="review[rating]" value="5" required />
+            <label for="5-stars"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="4-stars" name="review[rating]" value="4" />
+            <label for="4-stars"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="3-stars" name="review[rating]" value="3" />
+            <label for="3-stars"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="2-stars" name="review[rating]" value="2" />
+            <label for="2-stars"><i class="fa-solid fa-star"></i></label>
+
+            <input type="radio" id="1-star" name="review[rating]" value="1" />
+            <label for="1-star"><i class="fa-solid fa-star"></i></label>
+          </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Comment</label>
-          <textarea name="review[comment]" rows="4"
-                    class="form-control" required></textarea>
+          <textarea name="review[comment]" rows="4" class="form-control" required></textarea>
           <div class="invalid-feedback">Please enter a comment</div>
         </div>
 
@@ -82,7 +83,6 @@
 
     <hr />
 
-    <!-- ALL REVIEWS -->
     <h4 class="mt-4 mb-3 text-center">All Reviews</h4>
     <div class="row">
 
@@ -95,7 +95,6 @@
           <div class="card shadow-sm h-100">
             <div class="card-body">
 
-              <!-- REVIEW AUTHOR -->
               <h6 class="card-title mb-1">
                 <strong>
                   <% if (currentUser && review.author._id.equals(currentUser._id)) { %>
@@ -106,15 +105,19 @@
                 </strong>
               </h6>
 
-              <!-- RATING -->
-              <small class="text-warning">
-                <%= "★".repeat(review.rating) %>
-              </small>
+              <!-- ⭐ DISPLAY STARS -->
+              <div class="review-stars">
+                <% for(let i = 1; i <= 5; i++) { %>
+                  <% if(i <= review.rating) { %>
+                    <i class="fa-solid fa-star filled"></i>
+                  <% } else { %>
+                    <i class="fa-regular fa-star empty"></i>
+                  <% } %>
+                <% } %>
+              </div>
 
-              <!-- COMMENT -->
               <p class="card-text mt-2"><%= review.comment %></p>
 
-              <!-- DELETE REVIEW (AUTHOR ONLY) -->
               <% if (currentUser && review.author._id.equals(currentUser._id)) { %>
               <form method="POST"
                     action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
@@ -129,6 +132,5 @@
       <% } %>
 
     </div>
-
   </div>
 </div>

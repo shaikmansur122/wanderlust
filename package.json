@@ -9,6 +9,8 @@
   "author": "mansur",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.16.2",
+    "axios": "^1.13.4",
     "bootstrap": "^5.3.8",
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",

@@ -1,12 +1,8 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light border_bottom sticky-top">
+\<nav class="navbar navbar-expand-md navbar-light bg-light border_bottom sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"><i class="fa-sharp fa-solid fa-compass"></i></a>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -26,27 +22,18 @@
         <% } %>
       </ul>
 
-      <!-- RIGHT SIDE AUTH LINKS -->
       <ul class="navbar-nav ms-auto">
-
         <% if (!currentUser) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/signup">Sign Up</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
         <% } else { %>
           <li class="nav-item">
-            <span class="nav-link text-dark fw-bold">
-              Hello, <%= currentUser.username %>
-            </span>
+            <span class="nav-link fw-bold">Hello, <%= currentUser.username %></span>
           </li>
           <li class="nav-item">
             <a class="nav-link text-danger" href="/logout">Logout</a>
           </li>
         <% } %>
-
       </ul>
     </div>
   </div>

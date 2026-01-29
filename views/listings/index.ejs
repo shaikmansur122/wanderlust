@@ -1,29 +1,52 @@
 <% layout("/layouts/boilerplate") %>
 
+<!-- 🔍 SEARCH -->
+<form class="d-flex justify-content-center my-3" action="/listings" method="GET">
+  <input class="form-control w-50 me-2" type="search" name="search" placeholder="Search destinations..." />
+  <button class="btn btn-danger">Search</button>
+</form>
+
+<!-- 🎛 FILTER BAR -->
+<div class="filters-bar mb-3">
+  <div class="filter-item">🏖 Beach</div>
+  <div class="filter-item">🏔 Mountains</div>
+  <div class="filter-item">🏙 City</div>
+  <div class="filter-item">🏕 Camping</div>
+  <div class="filter-item">🏡 Farm</div>
+</div>
+
+<!-- 💰 TAX SWITCH -->
+<div class="text-end mb-3">
+  <label class="me-2">Show prices with tax</label>
+  <input type="checkbox" id="taxSwitch">
+</div>
+
 <h3>All Listings</h3>
 
 <div class="row">
   <% for (let listing of allListings) { %>
-    <div class="col-12 col-md-6 col-lg-4 mb-3">
-      <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-        <div class="card h-100" style="width: 20rem;">
-          <img 
-            src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' %>" 
-            class="card-img-top fixed-img"
-            alt="listing image"
-          />
-          <div class="card-img-overlay"></div>
-
-
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+      <a href="/listings/<%= listing._id %>" class="card-link">
+        <div class="card listing-card h-100">
+          <img src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' %>" 
+               class="listing-img" />
           <div class="card-body">
-            <h5 class="card-title"><%= listing.title %></h5>
-
-            <p class="card-text">
-              ₹ <%= listing.price %> / night
-            </p>
+            <h6><%= listing.title %></h6>
+            <p class="text-muted"><%= listing.location %></p>
+            <p class="price" data-base="<%= listing.price %>">₹<%= listing.price %></p>
           </div>
         </div>
       </a>
     </div>
   <% } %>
 </div>
+
+<script>
+  document.getElementById("taxSwitch").addEventListener("change", function () {
+    const prices = document.querySelectorAll(".price");
+    prices.forEach(p => {
+      let base = parseInt(p.dataset.base);
+      p.innerText = "₹" + (this.checked ? Math.round(base * 1.18) : base);
+    });
+  });
+</script>

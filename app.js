@@ -1,8 +1,4 @@
 require("dotenv").config();
-console.log("ENV CHECK:");
-console.log(process.env.CLOUD_NAME);
-console.log(process.env.CLOUD_API_KEY);
-console.log(process.env.CLOUD_API_SECRET);
 
 const express = require("express");
 const app = express();
@@ -13,30 +9,25 @@ const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-console.log(typeof LocalStrategy);
-const User = require("./models/user.js");
-
-
-
+const LocalStrategy = require("passport-local");
 const ExpressError = require("./utils/expressError");
+const User = require("./models/user");
 
 // --------------------
-// ROUTES
+// ROUTES (FIXED FILENAMES)
 // --------------------
 const listingRoutes = require("./routes/listing");
 const reviewRoutes = require("./routes/reviews");
-const userRoutes = require("./routes/user.js");
+const userRoutes = require("./routes/user");
+
 
 // --------------------
 // DATABASE
 // --------------------
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-
-mongoose.connect(MONGO_URL)
-  .then(() => console.log("MongoDB connected"))
+mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
+  .then(() => console.log("✅ MongoDB connected"))
   .catch(err => {
-    console.error(err);
+    console.error("MongoDB ERROR:", err);
     process.exit(1);
   });
 
@@ -52,41 +43,44 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-const sessionOptions = {
+// --------------------
+// SESSION
+// --------------------
+app.use(session({
   secret: process.env.SESSION_SECRET || "devsecret",
   resave: false,
-  saveUninitialized: true,
-  cookie: {
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 3,
-    maxAge: 1000 * 60 * 60 * 24 * 3,
-    httpOnly: true
-  },
-};
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 3, httpOnly: true }
+}));
 
-app.use(session(sessionOptions));
 app.use(flash());
 
-  // --------------------
-// AUTENTICATION
 // --------------------
-
+// PASSPORT
+// --------------------
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
- 
 
-
-
+// --------------------
+// GLOBAL LOCALS
+// --------------------
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");   
-  res.locals.currentUser = req.user;       
+  res.locals.error = req.flash("error");
+  res.locals.currentUser = req.user;
   next();
 });
 
+// --------------------
+// 🏠 HOME ROUTE (FIX FOR NAVBAR HOME BUTTON)
+// --------------------
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 // --------------------
 // ROUTE MOUNTING
@@ -98,7 +92,7 @@ app.use("/", userRoutes);
 // --------------------
 // 404 HANDLER
 // --------------------
-app.use((req, res, next) => {
+app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
 
@@ -106,14 +100,12 @@ app.use((req, res, next) => {
 // ERROR HANDLER
 // --------------------
 app.use((err, req, res, next) => {
-  console.error("🔥 REAL ERROR:", err); 
+  console.error("🔥 REAL ERROR:", err);
   const { statusCode = 500, message = "Something went wrong" } = err;
-  res.status(statusCode);
-  res.render("error", { message });
+  res.status(statusCode).render("error", { message });
 });
-
 
 // --------------------
 app.listen(8080, () => {
-  console.log("Server running on port 8080");
+  console.log("🚀 Server running on port 8080");
 });

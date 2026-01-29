@@ -1,39 +1,18 @@
-# WanderLust
+WanderLust is a full-stack web application inspired by Airbnb, built using Node.js, Express.js, MongoDB, and EJS.
+It allows users to discover travel stays, create their own listings, upload images, and leave reviews — all with secure authentication and location mapping.
 
-A full stack web application built using Node.js, Express.js, MongoDB, and EJS.
+ Key Features
+ Authentication System
 
-## Features
-- CRUD operations for listings
-- Review system with validation
-- MVC architecture
-- Error handling
-- image uploading using cloudnary
+User registration with encrypted password hashing
 
-## 🆕 Recent Updates
-
-- Fixed listing image validation using Joi
-- Improved flash messages UI
-- Enhanced error handling and validation flow
-- ADDED cookie sessions
--  added image upload feature
-
-## How to Run
-```bash
-npm install
-npm start
-
-🚀 Added Features
-🔐 Authentication System
-
-User signup with encrypted password storage
-
-User login & logout using Passport.js
+Login & logout using Passport.js
 
 Session-based authentication
 
-Flash messages for success & error handling
+Flash messages for success & error feedback
 
-👤 Authorization (Security)
+   Authorization (Security)
 
 Only logged-in users can create listings
 
@@ -43,76 +22,103 @@ Only logged-in users can post reviews
 
 Only review authors can delete their reviews
 
-🏠 Listings Module
+   Listings Module
 
-Create new listings
+Create, edit, and delete travel listings
 
-View all listings
+View all listings in responsive card layout
 
-View detailed listing page
+Individual listing detail page with:
 
-Edit & delete listing (owner only)
+Owner information
 
-Each listing is linked to its creator
+Price and location details
 
-⭐ Reviews System
+Map preview
 
-Logged-in users can add reviews
+Search listings by location
 
-Reviews include rating + comment
+   Reviews System
 
-Reviewer name automatically displayed
+Users can add ratings (1–5 stars) and comments
 
-Users can delete only their own reviews
+Reviewer name displayed automatically
 
-🎨 UI Features
+Review deletion restricted to author
 
-Bootstrap responsive design
+🗺 Location & Map Integration
 
-Flash alerts for actions
+Address-based geocoding using OpenStreetMap (Nominatim API)
 
-Clean listing cards layout
+Geographic coordinates stored in MongoDB
 
-Dynamic show page with owner & reviewer info
+Interactive maps displayed using Leaflet.js
 
-🧠 Backend Features
+Automatic recovery if older listings lack coordinates
+
+    Image Upload & Management
+
+Listings support image uploads directly from a user’s device.
+
+Features
+
+Images stored securely on Cloudinary
+
+Image URL and filename saved in MongoDB
+
+While editing a listing:
+
+Old image is deleted from Cloudinary
+
+New image replaces it
+
+If no new upload is made, the existing image remains
+
+Technologies Used
+
+Multer – File upload handling
+
+Cloudinary – Cloud image storage
+
+multer-storage-cloudinary – Multer–Cloudinary integration
+
+dotenv – Secure credential management
+
+   UI/UX Enhancements
+
+Responsive UI using Bootstrap
+
+Airbnb-style listing cards
+
+Search bar on homepage
+
+Filter UI section
+
+Tax price toggle (dynamic price calculation)
+
+Flash alerts for actions and errors
+
+ Backend Architecture
+
+MVC project structure
 
 MongoDB database with Mongoose models
 
 JOI validation for listings & reviews
 
-Express error handling middleware
+Centralized Express error handling
 
 Method-override for PUT & DELETE routes
 
-
-
-NEW FEATURES
-
-📸 Image Upload & Update Feature
-
-This project supports image upload from local system when creating and editing listings using Cloudinary.
-
-🚀 Features
-
-Users can upload images directly from their computer.
-
-Images are stored securely on Cloudinary.
-
-The image URL and filename are saved in MongoDB.
-
-While editing a listing:
-
-If a new image is uploaded → the old image is automatically deleted from Cloudinary.
-
-If no image is uploaded → the existing image remains unchanged.
-
-🛠 Technologies Used
-
-Multer – Handles file uploads
-
-Cloudinary – Cloud image storage
-
-multer-storage-cloudinary – Connects multer with Cloudinary
-
-dotenv – Secures API credentials
+ Tech Stack
+Layer	Technology
+Frontend	EJS, Bootstrap, CSS
+Backend	Node.js, Express.js
+Database	MongoDB + Mongoose
+Authentication	Passport.js
+Image Storage	Cloudinary
+Maps	Leaflet.js + OpenStreetMap
+Validation	JOI
+     How to Run Locally
+npm install
+npm start

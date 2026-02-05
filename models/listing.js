@@ -28,7 +28,14 @@ const listingSchema = new Schema({
     type: String,
   },
 
-  // ⭐⭐⭐ THIS WAS MISSING (MAIN FIX)
+  /* 🌟 NEW — Mood-Based Tag */
+  mood: {
+    type: String,
+    enum: ["Relax", "Adventure", "Romantic", "Party", "Nature"],
+    required: true,
+  },
+
+  /* 📍 GeoJSON Location */
   geometry: {
     type: {
       type: String,
@@ -54,7 +61,7 @@ const listingSchema = new Schema({
   },
 });
 
-// Optional: Add index for geospatial queries
+// 🌍 Geospatial index
 listingSchema.index({ geometry: "2dsphere" });
 
 module.exports = mongoose.model("Listing", listingSchema);

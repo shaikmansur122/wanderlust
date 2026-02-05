@@ -21,6 +21,20 @@
         <div class="invalid-feedback">Please enter a description</div>
       </div>
 
+      <!-- 🌟 MOOD SELECTION (NEW FEATURE) -->
+      <div class="mb-3">
+        <label class="form-label">Travel Mood</label>
+        <select name="listing[mood]" class="form-select" required>
+          <option value="">Select Mood</option>
+          <option value="Relax">😌 Relax</option>
+          <option value="Adventure">🧗 Adventure</option>
+          <option value="Romantic">💑 Romantic</option>
+          <option value="Party">🎉 Party</option>
+          <option value="Nature">🌿 Nature</option>
+        </select>
+        <div class="invalid-feedback">Please select a mood</div>
+      </div>
+
       <!-- IMAGE UPLOAD -->
       <div class="mb-4">
         <label class="form-label">Upload Image</label>
@@ -60,3 +74,20 @@
 
   </div>
 </div>
+
+<!-- Bootstrap Validation Script -->
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})();
+</script>

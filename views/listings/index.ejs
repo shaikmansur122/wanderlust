@@ -8,18 +8,18 @@
     value="<%= search %>"
     placeholder="Search by title or location..."
     class="form-control w-50 me-2"
-    required
   >
   <button class="btn btn-danger">Search</button>
 </form>
 
-<!-- 🏷 FILTER TAGS -->
-<div class="filters-bar mb-3 text-center">
-  <div class="filter-item">🏖 Beach</div>
-  <div class="filter-item">🏔 Mountains</div>
-  <div class="filter-item">🏙 City</div>
-  <div class="filter-item">🏕 Camping</div>
-  <div class="filter-item">🏡 Farm</div>
+<!-- 🌟 MOOD FILTERS -->
+<div class="text-center mb-4">
+  <a href="/listings?mood=Relax" class="btn btn-outline-primary m-1">😌 Relax</a>
+  <a href="/listings?mood=Adventure" class="btn btn-outline-primary m-1">🧗 Adventure</a>
+  <a href="/listings?mood=Romantic" class="btn btn-outline-primary m-1">💑 Romantic</a>
+  <a href="/listings?mood=Party" class="btn btn-outline-primary m-1">🎉 Party</a>
+  <a href="/listings?mood=Nature" class="btn btn-outline-primary m-1">🌿 Nature</a>
+  <a href="/listings" class="btn btn-dark m-1">Show All</a>
 </div>
 
 <!-- 💰 TAX SWITCH -->
@@ -30,7 +30,6 @@
 
 <h3>All Listings</h3>
 
-<!-- 📦 LISTINGS GRID -->
 <div class="row">
   <% if (allListings.length === 0) { %>
     <h5 class="text-center text-muted">No listings found 😕</h5>
@@ -40,11 +39,11 @@
     <div class="col-12 col-md-6 col-lg-4 mb-4">
       <a href="/listings/<%= listing._id %>" class="card-link text-decoration-none">
         <div class="card listing-card h-100">
-          <img src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' %>" 
-               class="listing-img" />
+          <img src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' %>" class="listing-img" />
 
           <div class="card-body">
             <h6><%= listing.title %></h6>
+            <p class="badge bg-info text-dark"><%= listing.mood %></p>
             <p class="text-muted"><%= listing.location %></p>
             <p class="price" data-base="<%= listing.price %>">₹<%= listing.price %></p>
           </div>
@@ -54,13 +53,12 @@
   <% } %>
 </div>
 
-<!-- 💰 TAX CALCULATOR SCRIPT -->
 <script>
-  document.getElementById("taxSwitch").addEventListener("change", function () {
-    const prices = document.querySelectorAll(".price");
-    prices.forEach(p => {
-      let base = parseInt(p.dataset.base);
-      p.innerText = "₹" + (this.checked ? Math.round(base * 1.18) : base);
-    });
+document.getElementById("taxSwitch").addEventListener("change", function () {
+  const prices = document.querySelectorAll(".price");
+  prices.forEach(p => {
+    let base = parseInt(p.dataset.base);
+    p.innerText = "₹" + (this.checked ? Math.round(base * 1.18) : base);
   });
+});
 </script>

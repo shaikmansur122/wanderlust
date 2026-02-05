@@ -1,32 +1,24 @@
 const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
-const { cloudinary } = require("../cloudConfig");
-const axios = require("axios");
 
-/* ================= INDEX + SEARCH + MOOD FILTER ================= */
+/* INDEX */
 module.exports.index = async (req, res) => {
   let filter = {};
 
-  // 🔍 Text Search
   if (req.query.search) {
     const regex = new RegExp(req.query.search, "i");
     filter.$or = [{ title: regex }, { location: regex }];
   }
 
-  // 🌟 Mood Filter
   if (req.query.mood) {
     filter.mood = req.query.mood;
   }
 
   const allListings = await Listing.find(filter).lean();
-
-  res.render("listings/index", {
-    allListings,
-    search: req.query.search || ""
-  });
+  res.render("listings/index", { allListings, search: req.query.search || "" });
 };
 
-/* ================= SHOW ================= */
+/* SHOW */
 module.exports.showListing = async (req, res) => {
   const { id } = req.params;
 
@@ -36,25 +28,41 @@ module.exports.showListing = async (req, res) => {
 
   if (!listing) throw new ExpressError(404, "Listing not found");
 
-  if (!listing.geometry || !listing.geometry.coordinates) {
-    try {
-      const geoRes = await axios.get("https://nominatim.openstreetmap.org/search", {
-        params: { q: listing.location, format: "json", limit: 1 },
-        headers: { "User-Agent": "wanderlust-app" }
-      });
-
-      if (geoRes.data.length) {
-        const { lon, lat } = geoRes.data[0];
-        listing.geometry = { type: "Point", coordinates: [parseFloat(lon), parseFloat(lat)] };
-        await listing.save();
-      }
-    } catch (err) {
-      console.log("Geocoding failed:", err.message);
-    }
-  }
-
   res.render("listings/show", { listing });
 };
 
-/* ================= OTHER FUNCTIONS (UNCHANGED) ================= */
-// renderNewForm, createListing, updateListing, deleteListing stay same
+/* NEW FORM */
+module.exports.renderNewForm = (req, res) => {
+  res.render("listings/new");
+};
+
+/* CREATE */
+module.exports.createListing = async (req, res) => {
+  const newListing = new Listing(req.body.listing);
+  newListing.owner = req.user._id;
+  await newListing.save();
+  req.flash("success", "Listing created!");
+  res.redirect(`/listings/${newListing._id}`);
+};
+
+/* EDIT FORM */
+module.exports.renderEditForm = async (req, res) => {
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) throw new ExpressError(404, "Listing not found");
+  res.render("listings/edit", { listing });
+};
+
+/* UPDATE */
+module.exports.updateListing = async (req, res) => {
+  const { id } = req.params;
+  await Listing.findByIdAndUpdate(id, req.body.listing);
+  req.flash("success", "Listing updated!");
+  res.redirect(`/listings/${id}`);
+};
+
+/* DELETE */
+module.exports.deleteListing = async (req, res) => {
+  await Listing.findByIdAndDelete(req.params.id);
+  req.flash("success", "Listing deleted");
+  res.redirect("/listings");
+};

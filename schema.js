@@ -5,15 +5,21 @@ const Joi = require("joi");
  * Now image is NOT validated here
  * because file upload comes via multer (req.file)
  */
+
+
 module.exports.listingSchema = Joi.object({
   listing: Joi.object({
-    title: Joi.string().trim().required(),
-    description: Joi.string().trim().required(),
-    price: Joi.number().min(0).required(),
-    country: Joi.string().trim().required(),
-    location: Joi.string().trim().required(),
-  }).required(),
+    title: Joi.string().required(),
+    description: Joi.string().required(),
+    price: Joi.number().required().min(0),
+    location: Joi.string().required(),
+    country: Joi.string().required(),
+    mood: Joi.string()
+      .valid("Relax", "Adventure", "Romantic", "Party", "Nature")
+      .required()
+  }).required()
 });
+
 
 /**
  * REVIEW VALIDATION SCHEMA

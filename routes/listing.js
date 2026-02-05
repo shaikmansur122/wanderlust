@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
-const ExpressError = require("../utils/expressError"); // 👈 MISSING BEFORE
+const ExpressError = require("./utils/ExpressError"); // 👈 MISSING BEFORE
 const { listingSchema } = require("../schema");
 const { isLoggedIn, isListingOwner } = require("../middleware");
 const listingController = require("../controllers/listingController");

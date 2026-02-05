@@ -12,7 +12,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
-const ExpressError = require("./utils/expressError");
+const ExpressError = require("./utils/temp.js");
 const User = require("./models/user");
 
 const listingRoutes = require("./routes/listing");

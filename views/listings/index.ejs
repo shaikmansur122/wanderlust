@@ -1,13 +1,20 @@
 <% layout("/layouts/boilerplate") %>
 
-<!-- 🔍 SEARCH -->
-<form class="d-flex justify-content-center my-3" action="/listings" method="GET">
-  <input class="form-control w-50 me-2" type="search" name="search" placeholder="Search destinations..." />
+<!-- 🔍 SEARCH BAR -->
+<form class="d-flex justify-content-center my-4" action="/listings" method="GET">
+  <input
+    type="text"
+    name="search"
+    value="<%= search %>"
+    placeholder="Search by title or location..."
+    class="form-control w-50 me-2"
+    required
+  >
   <button class="btn btn-danger">Search</button>
 </form>
 
-<!-- 🎛 FILTER BAR -->
-<div class="filters-bar mb-3">
+<!-- 🏷 FILTER TAGS -->
+<div class="filters-bar mb-3 text-center">
   <div class="filter-item">🏖 Beach</div>
   <div class="filter-item">🏔 Mountains</div>
   <div class="filter-item">🏙 City</div>
@@ -23,13 +30,19 @@
 
 <h3>All Listings</h3>
 
+<!-- 📦 LISTINGS GRID -->
 <div class="row">
+  <% if (allListings.length === 0) { %>
+    <h5 class="text-center text-muted">No listings found 😕</h5>
+  <% } %>
+
   <% for (let listing of allListings) { %>
     <div class="col-12 col-md-6 col-lg-4 mb-4">
-      <a href="/listings/<%= listing._id %>" class="card-link">
+      <a href="/listings/<%= listing._id %>" class="card-link text-decoration-none">
         <div class="card listing-card h-100">
           <img src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' %>" 
                class="listing-img" />
+
           <div class="card-body">
             <h6><%= listing.title %></h6>
             <p class="text-muted"><%= listing.location %></p>
@@ -41,6 +54,7 @@
   <% } %>
 </div>
 
+<!-- 💰 TAX CALCULATOR SCRIPT -->
 <script>
   document.getElementById("taxSwitch").addEventListener("change", function () {
     const prices = document.querySelectorAll(".price");

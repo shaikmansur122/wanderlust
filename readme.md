@@ -5,7 +5,7 @@ Wanderlust is a full-stack travel listing platform where users can explore desti
 ------------------------------------------------------------
 
 Live Demo  
-
+https://wanderlust-iawk.onrender.com
 
 ------------------------------------------------------------
 
@@ -87,7 +87,7 @@ public      - Static files
 Installation (Local Setup)
 
 1. Clone the repository
-git clone https://github.com/your-username/wanderlust.git
+git clone https://github.com/shaikmansur122/wanderlust.git
 
 2. Install dependencies
 npm install
@@ -129,4 +129,4 @@ Future Improvements
 ------------------------------------------------------------
 
 Author  
-Your Name
+Shaik mansur

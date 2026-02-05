@@ -1,124 +1,132 @@
-WanderLust is a full-stack web application inspired by Airbnb, built using Node.js, Express.js, MongoDB, and EJS.
-It allows users to discover travel stays, create their own listings, upload images, and leave reviews — all with secure authentication and location mapping.
+Wanderlust - Travel Listing Web Application
 
- Key Features
- Authentication System
+Wanderlust is a full-stack travel listing platform where users can explore destinations, add their own places, leave reviews, and discover trips based on travel preferences. This project simulates real-world travel platforms and includes features focused on usability, search, and structured backend design.
 
-User registration with encrypted password hashing
+------------------------------------------------------------
 
-Login & logout using Passport.js
+Live Demo  
 
-Session-based authentication
 
-Flash messages for success & error feedback
-
-   Authorization (Security)
-
-Only logged-in users can create listings
-
-Only listing owners can edit or delete their listings
-
-Only logged-in users can post reviews
-
-Only review authors can delete their reviews
-
-   Listings Module
-
-Create, edit, and delete travel listings
-
-View all listings in responsive card layout
-
-Individual listing detail page with:
-
-Owner information
-
-Price and location details
-
-Map preview
-
-Search listings by location
-
-   Reviews System
-
-Users can add ratings (1–5 stars) and comments
-
-Reviewer name displayed automatically
-
-Review deletion restricted to author
-
-🗺 Location & Map Integration
-
-Address-based geocoding using OpenStreetMap (Nominatim API)
-
-Geographic coordinates stored in MongoDB
-
-Interactive maps displayed using Leaflet.js
-
-Automatic recovery if older listings lack coordinates
-
-    Image Upload & Management
-
-Listings support image uploads directly from a user’s device.
+------------------------------------------------------------
 
 Features
 
-Images stored securely on Cloudinary
+Authentication and Users
+- User signup and login
+- Secure session handling
+- Only listing owners can edit or delete their listings
 
-Image URL and filename saved in MongoDB
+Listings System
+- Create, update, and delete listings
+- Image upload using cloud storage
+- Location-based listings with stored coordinates
 
-While editing a listing:
+Reviews
+- Users can add and delete reviews
+- Reviews linked to both users and listings
 
-Old image is deleted from Cloudinary
+Search Functionality
+- Search listings by title or location
+- Case-insensitive filtering
 
-New image replaces it
+Mood-Based Travel Discovery
+- Listings are categorized by travel mood:
+  Relax, Adventure, Romantic, Party, Nature
+- Users can filter destinations based on travel intent
 
-If no new upload is made, the existing image remains
+Dynamic Price Toggle
+- Users can view price with or without tax
 
-Technologies Used
+Geolocation Support
+- Listings store geographic coordinates for map integration
 
-Multer – File upload handling
+Cloud Image Storage
+- Images managed through cloud-based storage
 
-Cloudinary – Cloud image storage
+Deployment
+- Application deployed on a cloud hosting platform
+- Uses environment variables for configuration
 
-multer-storage-cloudinary – Multer–Cloudinary integration
+------------------------------------------------------------
 
-dotenv – Secure credential management
+Technology Stack
 
-   UI/UX Enhancements
+Frontend
+HTML  
+CSS  
+Bootstrap  
+EJS Templates  
 
-Responsive UI using Bootstrap
+Backend
+Node.js  
+Express.js  
 
-Airbnb-style listing cards
+Database
+MongoDB  
+Mongoose  
 
-Search bar on homepage
+Authentication
+Passport.js  
 
-Filter UI section
+Other Integrations
+Cloud image storage  
+Geocoding API  
 
-Tax price toggle (dynamic price calculation)
+------------------------------------------------------------
 
-Flash alerts for actions and errors
+Project Structure
 
- Backend Architecture
+models      - Database schemas  
+routes      - Express route definitions  
+controllers - Application logic  
+views       - EJS templates  
+public      - Static files  
 
-MVC project structure
+------------------------------------------------------------
 
-MongoDB database with Mongoose models
+Installation (Local Setup)
 
-JOI validation for listings & reviews
+1. Clone the repository
+git clone https://github.com/your-username/wanderlust.git
 
-Centralized Express error handling
-
-Method-override for PUT & DELETE routes
-
- Tech Stack
-Layer	Technology
-Frontend	EJS, Bootstrap, CSS
-Backend	Node.js, Express.js
-Database	MongoDB + Mongoose
-Authentication	Passport.js
-Image Storage	Cloudinary
-Maps	Leaflet.js + OpenStreetMap
-Validation	JOI
-     How to Run Locally
+2. Install dependencies
 npm install
-npm start
+
+3. Create a .env file with:
+MONGO_URI=your_mongodb_connection_string  
+SESSION_SECRET=your_secret_key  
+CLOUDINARY_CLOUD_NAME=your_cloud_name  
+CLOUDINARY_KEY=your_api_key  
+CLOUDINARY_SECRET=your_api_secret  
+
+4. Start the server
+nodemon app.js
+
+5. Open in browser
+http://localhost:8080
+
+------------------------------------------------------------
+
+Learning Outcomes
+
+- RESTful backend architecture  
+- Database relationships and modeling  
+- Authentication and session handling  
+- Cloud deployment  
+- Environment variable management  
+- Real-world feature implementation  
+
+------------------------------------------------------------
+
+Future Improvements
+
+- Booking system  
+- Admin dashboard  
+- Email notifications  
+- Pagination  
+- Advanced filtering  
+
+------------------------------------------------------------
+
+Author  
+Your Name

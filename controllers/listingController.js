@@ -40,10 +40,20 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createListing = async (req, res) => {
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
+
+  // 🔥 SAVE IMAGE
+  if (req.file) {
+    newListing.image = {
+      url: req.file.path,
+      filename: req.file.filename
+    };
+  }
+
   await newListing.save();
   req.flash("success", "Listing created!");
   res.redirect(`/listings/${newListing._id}`);
 };
+
 
 /* EDIT FORM */
 module.exports.renderEditForm = async (req, res) => {
@@ -55,10 +65,20 @@ module.exports.renderEditForm = async (req, res) => {
 /* UPDATE */
 module.exports.updateListing = async (req, res) => {
   const { id } = req.params;
-  await Listing.findByIdAndUpdate(id, req.body.listing);
+  const listing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
+
+  if (req.file) {
+    listing.image = {
+      url: req.file.path,
+      filename: req.file.filename
+    };
+    await listing.save();
+  }
+
   req.flash("success", "Listing updated!");
   res.redirect(`/listings/${id}`);
 };
+
 
 /* DELETE */
 module.exports.deleteListing = async (req, res) => {

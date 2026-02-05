@@ -5,7 +5,11 @@
 
     <h3 class="mb-4 text-center">Create a New Listing</h3>
 
-    <form action="/listings" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+    <form action="/listings"
+          method="POST"
+          enctype="multipart/form-data"
+          class="needs-validation"
+          novalidate>
 
       <!-- TITLE -->
       <div class="mb-3">
@@ -21,7 +25,7 @@
         <div class="invalid-feedback">Please enter a description</div>
       </div>
 
-      <!-- 🌟 MOOD SELECTION (NEW FEATURE) -->
+      <!-- MOOD -->
       <div class="mb-3">
         <label class="form-label">Travel Mood</label>
         <select name="listing[mood]" class="form-select" required>
@@ -35,16 +39,10 @@
         <div class="invalid-feedback">Please select a mood</div>
       </div>
 
-      <!-- IMAGE UPLOAD -->
+      <!-- IMAGE -->
       <div class="mb-4">
         <label class="form-label">Upload Image</label>
-
-        <div class="upload-box text-center p-4">
-          <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
-          <p class="mb-2">Click to upload or drag an image</p>
-          <input type="file" name="image" class="form-control" accept="image/*" required>
-        </div>
-
+        <input type="file" name="image" class="form-control" accept="image/*" required>
         <div class="invalid-feedback">Please upload an image</div>
       </div>
 
@@ -74,20 +72,3 @@
 
   </div>
 </div>
-
-<!-- Bootstrap Validation Script -->
-<script>
-(() => {
-  'use strict'
-  const forms = document.querySelectorAll('.needs-validation')
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-      form.classList.add('was-validated')
-    }, false)
-  })
-})();
-</script>

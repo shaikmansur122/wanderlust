@@ -8,8 +8,8 @@
     <form method="POST"
           action="/listings/<%= listing._id %>?_method=PUT"
           enctype="multipart/form-data"
-          novalidate
-          class="needs-validation">
+          class="needs-validation"
+          novalidate>
 
       <!-- TITLE -->
       <div class="mb-3">
@@ -19,7 +19,6 @@
                type="text"
                required
                class="form-control" />
-        <div class="invalid-feedback">Please enter a valid title</div>
       </div>
 
       <!-- DESCRIPTION -->
@@ -28,78 +27,54 @@
         <textarea name="listing[description]"
                   class="form-control"
                   required><%= listing.description %></textarea>
-        <div class="invalid-feedback">Please enter a valid description</div>
       </div>
 
+      <!-- MOOD -->
+      <div class="mb-3">
+        <label class="form-label">Travel Mood</label>
+        <select name="listing[mood]" class="form-select" required>
+          <option value="Relax" <%= listing.mood==="Relax"?"selected":"" %>>Relax</option>
+          <option value="Adventure" <%= listing.mood==="Adventure"?"selected":"" %>>Adventure</option>
+          <option value="Romantic" <%= listing.mood==="Romantic"?"selected":"" %>>Romantic</option>
+          <option value="Party" <%= listing.mood==="Party"?"selected":"" %>>Party</option>
+          <option value="Nature" <%= listing.mood==="Nature"?"selected":"" %>>Nature</option>
+        </select>
+      </div>
 
-          <div class="mb-3">
-      <label class="form-label">Travel Mood</label>
-      <select name="listing[mood]" class="form-select" required>
-        <option value="Relax" <%= listing.mood === "Relax" ? "selected" : "" %>>Relax</option>
-        <option value="Adventure" <%= listing.mood === "Adventure" ? "selected" : "" %>>Adventure</option>
-        <option value="Romantic" <%= listing.mood === "Romantic" ? "selected" : "" %>>Romantic</option>
-        <option value="Party" <%= listing.mood === "Party" ? "selected" : "" %>>Party</option>
-        <option value="Nature" <%= listing.mood === "Nature" ? "selected" : "" %>>Nature</option>
-      </select>
-    </div>
-
-
-      <!-- CURRENT IMAGE PREVIEW -->
+      <!-- CURRENT IMAGE -->
       <div class="mb-3 text-center">
         <label class="form-label">Current Image</label><br>
-        <img src="<%= listing.image.url %>"
+        <img src="<%= listing.image?.url || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' %>"
              width="250"
              class="rounded shadow-sm mb-2">
       </div>
 
-      <!-- NEW IMAGE UPLOAD -->
+      <!-- NEW IMAGE -->
       <div class="mb-3">
         <label class="form-label">Update Image</label>
-        <input type="file"
-               name="image"
-               class="form-control"
-               accept="image/*">
-        <small class="text-muted">Leave empty to keep existing image</small>
+        <input type="file" name="image" class="form-control" accept="image/*">
       </div>
 
       <!-- PRICE -->
       <div class="mb-3">
         <label class="form-label">Price</label>
-        <input name="listing[price]"
-               value="<%= listing.price %>"
-               type="number"
-               class="form-control"
-               required />
-        <div class="invalid-feedback">Please enter a valid price</div>
+        <input name="listing[price]" value="<%= listing.price %>" type="number" required class="form-control" />
       </div>
 
       <!-- COUNTRY -->
       <div class="mb-3">
         <label class="form-label">Country</label>
-        <input name="listing[country]"
-               value="<%= listing.country %>"
-               type="text"
-               class="form-control"
-               required />
-        <div class="invalid-feedback">Please enter a valid country</div>
+        <input name="listing[country]" value="<%= listing.country %>" type="text" required class="form-control" />
       </div>
 
       <!-- LOCATION -->
       <div class="mb-3">
         <label class="form-label">Location</label>
-        <input name="listing[location]"
-               value="<%= listing.location %>"
-               type="text"
-               class="form-control"
-               required />
-        <div class="invalid-feedback">Please enter a valid location</div>
+        <input name="listing[location]" value="<%= listing.location %>" type="text" required class="form-control" />
       </div>
 
-      <button type="submit" class="btn btn-dark edit-btn">
-        Update Listing
-      </button>
+      <button type="submit" class="btn btn-dark">Update Listing</button>
 
     </form>
-
   </div>
 </div>

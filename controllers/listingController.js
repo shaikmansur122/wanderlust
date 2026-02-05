@@ -1,5 +1,5 @@
 const Listing = require("../models/listing");
-const ExpressError = require("./utils/ExpressError");
+const ExpressError = require("../utils/ExpressError");
 const { cloudinary } = require("../cloudConfig");
 const axios = require("axios");
 

@@ -1,5 +1,7 @@
 const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
+const axios = require("axios");
+
 
 /* INDEX */
 module.exports.index = async (req, res) => {
@@ -38,10 +40,36 @@ module.exports.renderNewForm = (req, res) => {
 
 /* CREATE */
 module.exports.createListing = async (req, res) => {
+  const locationText = req.body.listing.location;
+  let geometry;
+
+  try {
+    const geoRes = await axios.get(
+      "https://nominatim.openstreetmap.org/search",
+      {
+        params: { q: locationText, format: "json", limit: 1 },
+        headers: { "User-Agent": "wanderlust-app" }
+      }
+    );
+
+    if (geoRes.data.length) {
+      geometry = {
+        type: "Point",
+        coordinates: [
+          parseFloat(geoRes.data[0].lon),
+          parseFloat(geoRes.data[0].lat)
+        ]
+      };
+    }
+  } catch (err) {
+    console.log("Geocoding failed:", err.message);
+  }
+
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
 
-  // 🔥 SAVE IMAGE
+  if (geometry) newListing.geometry = geometry;
+
   if (req.file) {
     newListing.image = {
       url: req.file.path,

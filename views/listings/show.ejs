@@ -45,40 +45,26 @@
     <% } %>
 
     <!-- 🗺 MAP SECTION -->
-    <div id="map" class="mb-4"></div>
+    <div id="map" style="height:400px;"></div>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const coords = JSON.parse('<%- JSON.stringify(listing.geometry?.coordinates || []) %>');
 
-    <script>
-      const listingData = <%- JSON.stringify(listing) %>;
-      const mapDiv = document.getElementById("map");
+  if (coords.length === 2) {
+    const map = L.map('map').setView([coords[1], coords[0]], 10);
 
-      if (listingData.geometry && listingData.geometry.coordinates) {
-        const coords = listingData.geometry.coordinates;
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-        const map = L.map('map').setView([coords[1], coords[0]], 10);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        L.marker([coords[1], coords[0]])
-          .addTo(map)
-          .bindPopup(`<b>${listingData.title}</b><br>${listingData.location}`)
-          .openPopup();
-
-        setTimeout(() => map.invalidateSize(), 200);
-
-      } else {
-        mapDiv.innerHTML = `
-          <div style="height:400px; display:flex; align-items:center; justify-content:center; color:#888;">
-            Location data not available
-          </div>`;
-      }
-    </script>
-
-    <hr />
+    L.marker([coords[1], coords[0]])
+      .addTo(map)
+      .bindPopup("<%= listing.location %>");
+  } else {
+    document.getElementById("map").innerHTML =
+      "<p class='text-center mt-4 text-muted'>Location not available</p>";
+  }
+</script>
 
     <!-- ⭐ REVIEW FORM -->
     <% if (currentUser) { %>

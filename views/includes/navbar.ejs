@@ -1,16 +1,21 @@
-\<nav class="navbar navbar-expand-md navbar-light bg-light border_bottom sticky-top">
+<nav class="navbar navbar-expand-md navbar-light bg-light border_bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-sharp fa-solid fa-compass"></i></a>
+    <a class="navbar-brand" href="/">
+      <i class="fa-sharp fa-solid fa-compass"></i>
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
+
+      <!-- LEFT SIDE LINKS -->
+      <ul class="navbar-nav me-auto align-items-center">
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/listings">All Listings</a>
         </li>
@@ -22,10 +27,28 @@
         <% } %>
       </ul>
 
-      <ul class="navbar-nav ms-auto">
+      <!-- 🔍 SEARCH BAR -->
+      <form action="/listings" method="GET" class="d-flex me-3" role="search">
+        <input
+          type="text"
+          name="search"
+          value="<%= typeof search !== 'undefined' ? search : '' %>"
+          class="form-control me-2"
+          placeholder="Search by title or location..."
+          aria-label="Search"
+        >
+        <button class="btn btn-outline-dark" type="submit">Search</button>
+      </form>
+
+      <!-- RIGHT SIDE AUTH LINKS -->
+      <ul class="navbar-nav ms-auto align-items-center">
         <% if (!currentUser) { %>
-          <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
-          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
         <% } else { %>
           <li class="nav-item">
             <span class="nav-link fw-bold">Hello, <%= currentUser.username %></span>
@@ -35,6 +58,7 @@
           </li>
         <% } %>
       </ul>
+
     </div>
   </div>
 </nav>

@@ -31,6 +31,19 @@
         <div class="invalid-feedback">Please enter a valid description</div>
       </div>
 
+
+          <div class="mb-3">
+      <label class="form-label">Travel Mood</label>
+      <select name="listing[mood]" class="form-select" required>
+        <option value="Relax" <%= listing.mood === "Relax" ? "selected" : "" %>>Relax</option>
+        <option value="Adventure" <%= listing.mood === "Adventure" ? "selected" : "" %>>Adventure</option>
+        <option value="Romantic" <%= listing.mood === "Romantic" ? "selected" : "" %>>Romantic</option>
+        <option value="Party" <%= listing.mood === "Party" ? "selected" : "" %>>Party</option>
+        <option value="Nature" <%= listing.mood === "Nature" ? "selected" : "" %>>Nature</option>
+      </select>
+    </div>
+
+
       <!-- CURRENT IMAGE PREVIEW -->
       <div class="mb-3 text-center">
         <label class="form-label">Current Image</label><br>
